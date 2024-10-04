@@ -1,4 +1,4 @@
-package enlistment;
+package ph.edu.dlsu.enlistment;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
