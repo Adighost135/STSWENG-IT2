@@ -96,4 +96,21 @@ class StudentTest {
         assertEquals(1, student.getEnlistedSections().size());
         assertEquals(section1, student.getEnlistedSections().get(0));
     }
+
+    @Test
+    void exceededCapacity() {
+        // Enlist the first section
+        assertTrue(student.enlist(section1));
+
+        // Enlist another student in the same section to reach capacity
+        Student anotherStudent = new Student(67890);
+        assertTrue(anotherStudent.enlist(section1));
+
+        // Try to enlist a third student in the same section, exceeding capacity
+        Student thirdStudent = new Student(11111);
+        assertFalse(thirdStudent.enlist(section1));
+
+        // Verify the third student is not enlisted
+        assertEquals(0, thirdStudent.getEnlistedSections().size());
+    }
 }
