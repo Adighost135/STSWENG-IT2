@@ -113,4 +113,26 @@ class StudentTest {
         // Verify the third student is not enlisted
         assertEquals(0, thirdStudent.getEnlistedSections().size());
     }
+
+    @Test
+    void cancel() {
+        // Enlist the first section
+        assertTrue(student.enlist(section1));
+
+        // Verify the section is enlisted
+        assertEquals(1, student.getEnlistedSections().size());
+        assertEquals(section1, student.getEnlistedSections().get(0));
+
+        // Cancel the enlistment
+        assertTrue(student.cancelSection("S101"));
+
+        // Verify the section is canceled
+        assertEquals(0, student.getEnlistedSections().size());
+
+        // Verify the room's current enrollment is updated
+        assertEquals(0, room1.getCurrentEnrollment());
+
+        // Try to cancel a section that is not enlisted
+        assertFalse(student.cancelSection("S101"));
+    }
 }
