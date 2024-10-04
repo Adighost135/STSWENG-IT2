@@ -9,46 +9,39 @@ import java.util.Objects;
 class Section {
     private final String sectionId;
     private final Schedule schedule;
-    private final Room roomName;
+    private final Room room;
+    private final Subject subject;
 
-    Section(String sectionId, Schedule schedule, Room roomName) {
+    Section(String sectionId, Schedule schedule, Room room, Subject subject) {
         Objects.requireNonNull(sectionId);
         Objects.requireNonNull(schedule);
-        Objects.requireNonNull(roomName);
+        Objects.requireNonNull(room);
+        Objects.requireNonNull(subject);
+
         isBlank(sectionId);
         Validate.isTrue(isAlphanumeric(sectionId), "sectionId must be alphanumeric, was: "
                 + sectionId);
         this.sectionId = sectionId;
         this.schedule = schedule;
-        this.roomName = roomName;
+        this.room = room;
+        this.subject = subject;
     }
 
-//    boolean hasConflict(Section other){ delete
-//        return this.schedule.equals(other.schedule);
-//    }
-
-    void checkConflict(Section other){
-        if(this.schedule.equals(other.schedule)){
-            throw new ScheduleConflictException("this section : " + this +
-                    " and other section " + other +
-                    " has the same schedule at  " + schedule);
-        }
+    public boolean isConflict(Section otherSection) {
+        return this.schedule.isConflict(otherSection.schedule);
     }
 
-    void enlistStudent(){
-        if (!roomName.isVacant()){
-            throw new IllegalStateException("Room capacity is already full for room " + roomName);
-        }
-        roomName.addStudent();
+    public String getSectionId() {
+        return sectionId;
     }
 
-    void cancelEnlistment(){
-        roomName.removeStudent();
+    public Room getRoom() {
+        return room;
     }
 
-//    Schedule getSchedule(){
-//        return schedule; delete
-//    }
+    public Subject getSubject() {
+        return subject;
+    }
 
     @Override
     public String toString() {
