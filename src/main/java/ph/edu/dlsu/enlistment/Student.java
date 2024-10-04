@@ -2,7 +2,9 @@ package ph.edu.dlsu.enlistment;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.noNullElements;
@@ -12,17 +14,14 @@ class Student {
     private final int studentNo;
     private final List<Section> enlistedSections;
     private final List<Subject> completedSubjects;
-
-    Student(int studentNo, Collection<Section> enlistedSections, Collection<Subject> completedSubjects) {
+  
+    Student(int studentNo) {
         isTrue(studentNo >= 0, "studentNo must be non-negative; was " + studentNo);
+        this.enlistedSections = new ArrayList<>();
+        this.completedSubjects = new ArrayList<>();
         Objects.requireNonNull(enlistedSections);
         Objects.requireNonNull(completedSubjects);
         this.studentNo = studentNo;
-        this.enlistedSections = new ArrayList<>();
-        this.completedSubjects = new ArrayList<>();
-        noNullElements(enlistedSections);
-    }
-
     public boolean enlist(Section section) {
         for (Section enlistedSection : enlistedSections) {
             if (enlistedSection.getSectionId().equals(section.getSectionId())) {

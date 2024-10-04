@@ -1,12 +1,11 @@
 package ph.edu.dlsu.enlistment;
 
-import org.apache.commons.lang3.*;
-
-import static org.apache.commons.lang3.StringUtils.*;
-
 import java.util.Objects;
 
-class Section {
+import static org.apache.commons.lang3.StringUtils.isAlphanumeric;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import org.apache.commons.lang3.Validate;
+class Section{
     private final String sectionId;
     private final Schedule schedule;
     private final Room room;
@@ -14,7 +13,7 @@ class Section {
 
     Section(String sectionId, Schedule schedule, Room room, Subject subject) {
         Objects.requireNonNull(sectionId);
-        Objects.requireNonNull(schedule);
+        // Objects.requireNonNull(schedule);
         Objects.requireNonNull(room);
         Objects.requireNonNull(subject);
 
