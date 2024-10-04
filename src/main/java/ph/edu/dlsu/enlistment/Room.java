@@ -9,7 +9,7 @@ import static org.apache.commons.lang3.StringUtils.isAlphanumeric;
 class Room {
     private final String roomName;
     private final int capacity;
-    private int currEnlisted = 0;
+    private int currentEnrollment = 0;
 
     Room (String roomName, int capacity){
         Objects.requireNonNull(roomName);
@@ -23,21 +23,30 @@ class Room {
         this.capacity = capacity;
     }
 
-    boolean isVacant(){
-        return currEnlisted < capacity;
+    public boolean canEnlist() {
+        return currentEnrollment < capacity;
     }
 
-    void addStudent() {
-        if(!isVacant()) {
-            throw new IllegalStateException("Room capacity is already full for room " + roomName);
+    public boolean enlist() {
+        if (canEnlist()) {
+            currentEnrollment++;
+            return true;
         }
-        currEnlisted++;
+        return false;
     }
 
-    void removeStudent() {
-        if (currEnlisted > 0) {
-            currEnlisted--;
+    public void cancel() {
+        if (currentEnrollment > 0) {
+            currentEnrollment--;
         }
+    }
+
+    public int getCurrentEnrollment() {
+        return currentEnrollment;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
