@@ -1,20 +1,21 @@
 package ph.edu.dlsu.enlistment;
 
-import org.apache.commons.lang3.*;
-
-import static org.apache.commons.lang3.StringUtils.*;
-
 import java.util.Objects;
 
-class Section {
+import static org.apache.commons.lang3.StringUtils.isAlphanumeric;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import org.apache.commons.lang3.Validate;
+class Section{
     private final String sectionId;
     private final Schedule schedule;
     private final Room roomName;
 
     Section(String sectionId, Schedule schedule, Room roomName) {
         Objects.requireNonNull(sectionId);
-        Objects.requireNonNull(schedule);
-        Objects.requireNonNull(roomName);
+        // Objects.requireNonNull(schedule);
+        Objects.requireNonNull(room);
+        Objects.requireNonNull(subject);
+
         isBlank(sectionId);
         Validate.isTrue(isAlphanumeric(sectionId), "sectionId must be alphanumeric, was: "
                 + sectionId);
