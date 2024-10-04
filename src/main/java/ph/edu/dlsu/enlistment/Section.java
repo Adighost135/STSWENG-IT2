@@ -27,25 +27,21 @@ class Section {
         this.subject = subject;
     }
 
-    void checkConflict(Section other){
-        if(this.schedule.equals(other.schedule)){
-            throw new ScheduleConflictException("this section : " + this +
-                    " and other section " + other +
-                    " has the same schedule at  " + schedule);
-        }
+    public boolean isConflict(Section otherSection) {
+        return this.schedule.isConflict(otherSection.schedule);
     }
 
-    void enlistStudent(){
-        if (!room.isVacant()){
-            throw new IllegalStateException("Room capacity is already full for room " + room);
-        }
-        room.addStudent();
+    public String getSectionId() {
+        return sectionId;
     }
 
-    void cancelEnlistment(){
-        room.removeStudent();
+    public Room getRoom() {
+        return room;
     }
 
+    public Subject getSubject() {
+        return subject;
+    }
 
     @Override
     public String toString() {

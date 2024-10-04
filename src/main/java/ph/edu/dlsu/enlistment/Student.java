@@ -1,5 +1,7 @@
 package ph.edu.dlsu.enlistment;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 import static org.apache.commons.lang3.Validate.isTrue;
@@ -8,42 +10,82 @@ import static org.apache.commons.lang3.Validate.noNullElements;
 class Student {
     // make immutable
     private final int studentNo;
-    private final Collection<Section> sections = new HashSet<>();
-    private final Collection<Subject> subjects = new HashSet<>();
+    private final List<Section> enlistedSections;
+    private final List<Subject> completedSubjects;
 
-    Student(int studentNo, Collection<Section> sections, Collection<Subject> subjects) {
+    Student(int studentNo, Collection<Section> enlistedSections, Collection<Subject> completedSubjects) {
         isTrue(studentNo >= 0, "studentNo must be non-negative; was " + studentNo);
-        Objects.requireNonNull(sections);
-        Objects.requireNonNull(subjects);
+        Objects.requireNonNull(enlistedSections);
+        Objects.requireNonNull(completedSubjects);
         this.studentNo = studentNo;
-        this.sections.addAll(sections);
-        this.subjects.addAll(subjects);
-        noNullElements(sections);
+        this.enlistedSections = new ArrayList<>();
+        this.completedSubjects = new ArrayList<>();
+        noNullElements(enlistedSections);
     }
 
-    void enlist(Section newSection) {
-        Objects.requireNonNull(newSection);
-        // isTrue(!sections.contains(section), "cannot enlist in same section: " + section);
-        sections.forEach(currSection -> currSection.checkConflict(newSection));
-        newSection.enlistStudent(); // check the room capacity
-        sections.add(newSection);
-    }
-
-    void cancelEnlist(Section cancelSection){
-        Objects.requireNonNull(cancelSection);
-        if(!sections.contains(cancelSection)){
-            throw new IllegalArgumentException("Student is not enlisted in this section, section " + cancelSection);
+    public boolean enlist(Section section) {
+        for (Section enlistedSection : enlistedSections) {
+            if (enlistedSection.getSectionId().equals(section.getSectionId())) {
+                return false;
+            }
+            if (enlistedSection.isConflict(section)) {
+                return false;
+            }
+            if (enlistedSection.getSubject().getSubjectId().equals(section.getSubject().getSubjectId())) {
+                return false;
+            }
         }
-        cancelSection.cancelEnlistment();
-        sections.remove(cancelSection);
+        for (Subject prerequisite : section.getSubject().getPrerequisites()) {
+            if (!completedSubjects.contains(prerequisite)) {
+                return false;
+            }
+        }
+        if (section.getRoom().enlist()) {
+            enlistedSections.add(section);
+            return true;
+        }
+        return false;
     }
 
-    Collection<Section> getSections() {
-        return new ArrayList<>(sections);
+    public boolean cancelSection(String sectionId) {
+        for (Section section : enlistedSections) {
+            if (section.getSectionId().equals(sectionId)) {
+                section.getRoom().cancel();
+                enlistedSections.remove(section);
+                return true;
+            }
+        }
+        return false;
     }
 
-    Collection<Subject> getSubjects(){
-        return new ArrayList<>(subjects);
+    public List<Section> getEnlistedSections() {
+        return enlistedSections;
+    }
+
+    public void completeSubject(Subject subject) {
+        completedSubjects.add(subject);
+    }
+
+    public BigDecimal assess() {
+        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal unitCost = new BigDecimal("2000");
+        BigDecimal labFee = new BigDecimal("1000");
+        BigDecimal miscFees = new BigDecimal("3000");
+        BigDecimal vatRate = new BigDecimal("0.12");
+
+        for (Section section : enlistedSections) {
+            Subject subject = section.getSubject();
+            total = total.add(unitCost.multiply(new BigDecimal(subject.getUnits())));
+            if (subject.isLaboratory()) {
+                total = total.add(labFee);
+            }
+        }
+
+        total = total.add(miscFees);
+        BigDecimal vat = total.multiply(vatRate);
+        total = total.add(vat);
+
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
