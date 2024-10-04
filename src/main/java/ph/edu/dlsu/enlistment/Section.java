@@ -9,23 +9,23 @@ import java.util.Objects;
 class Section {
     private final String sectionId;
     private final Schedule schedule;
-    private final Room roomName;
+    private final Room room;
+    private final Subject subject;
 
-    Section(String sectionId, Schedule schedule, Room roomName) {
+    Section(String sectionId, Schedule schedule, Room room, Subject subject) {
         Objects.requireNonNull(sectionId);
         Objects.requireNonNull(schedule);
-        Objects.requireNonNull(roomName);
+        Objects.requireNonNull(room);
+        Objects.requireNonNull(subject);
+
         isBlank(sectionId);
         Validate.isTrue(isAlphanumeric(sectionId), "sectionId must be alphanumeric, was: "
                 + sectionId);
         this.sectionId = sectionId;
         this.schedule = schedule;
-        this.roomName = roomName;
+        this.room = room;
+        this.subject = subject;
     }
-
-//    boolean hasConflict(Section other){ delete
-//        return this.schedule.equals(other.schedule);
-//    }
 
     void checkConflict(Section other){
         if(this.schedule.equals(other.schedule)){
@@ -36,19 +36,16 @@ class Section {
     }
 
     void enlistStudent(){
-        if (!roomName.isVacant()){
-            throw new IllegalStateException("Room capacity is already full for room " + roomName);
+        if (!room.isVacant()){
+            throw new IllegalStateException("Room capacity is already full for room " + room);
         }
-        roomName.addStudent();
+        room.addStudent();
     }
 
     void cancelEnlistment(){
-        roomName.removeStudent();
+        room.removeStudent();
     }
 
-//    Schedule getSchedule(){
-//        return schedule; delete
-//    }
 
     @Override
     public String toString() {
