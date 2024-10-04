@@ -8,12 +8,15 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ph.edu.dlsu.enlistment.Days.*;
+import static ph.edu.dlsu.enlistment.Period.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class StudentTest {
     private Room room1;
     private Room room2;
+    private Schedule schedule1;
     private Schedule schedule2;
     private Schedule schedule3;
     private Schedule schedule4;
@@ -33,9 +36,9 @@ class StudentTest {
     void setUp() {
         room1 = new Room("GK101", 2); // Room with capacity of 2
         room2 = new Room("GK102", 1); // Room with capacity of 1
-        Schedule schedule1 = new Schedule("MT", "H8300");
-        schedule2 = new Schedule("TF", "H1000");
-        schedule3 = new Schedule("WS", "H1130");
+        schedule1 = new Schedule(MTH, H0830);
+        schedule2 = new Schedule(TF,H1000);
+        schedule3 = new Schedule(WS, H1130);
         subject1 = new Subject("CSST101", 3, false, Collections.emptyList());
         subject2 = new Subject("CSST102", 3, false, Collections.emptyList());
         subject3 = new Subject("CSST103", 3, false, Collections.emptyList());
