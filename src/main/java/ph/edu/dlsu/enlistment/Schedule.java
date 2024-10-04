@@ -9,6 +9,10 @@ record Schedule(Days days, Period period) {
         Objects.requireNonNull(period);
     }
 
+    public boolean isConflict(Schedule other) {
+        return this.days.equals(other.days) && this.period.equals(other.period);
+    }
+
     @Override
     public String toString(){
         // TF H0830, WS H1000
