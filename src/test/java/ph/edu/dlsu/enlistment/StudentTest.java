@@ -145,7 +145,7 @@ class StudentTest {
 
         // Try to cancel a section that is not enlisted
         assertFalse(student.cancelSection("S101"));
-    
+    }
     @Test
     void prerequisites() {
         // Try to enlist in a section without completing prerequisites

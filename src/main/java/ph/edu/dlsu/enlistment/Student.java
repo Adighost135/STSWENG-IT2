@@ -22,6 +22,8 @@ class Student {
         Objects.requireNonNull(enlistedSections);
         Objects.requireNonNull(completedSubjects);
         this.studentNo = studentNo;
+
+    }
     public boolean enlist(Section section) {
         for (Section enlistedSection : enlistedSections) {
             if (enlistedSection.getSectionId().equals(section.getSectionId())) {
