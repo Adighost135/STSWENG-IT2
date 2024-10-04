@@ -81,3 +81,19 @@ class StudentTest {
         // Verify the room's current enrollment
         assertEquals(1, room2.getCurrentEnrollment());
     }
+
+    @Test
+    void conflict() {
+        // Enlist the first section
+        assertTrue(student.enlist(section1));
+
+        // Try to enlist another section with a conflicting schedule
+        Schedule conflictingSchedule = new Schedule("MT", "H8300");
+        Section conflictingSection = new Section("S104", conflictingSchedule, room2, subject3);
+        assertFalse(student.enlist(conflictingSection));
+
+        // Verify the conflicting section is not enlisted
+        assertEquals(1, student.getEnlistedSections().size());
+        assertEquals(section1, student.getEnlistedSections().get(0));
+    }
+}
