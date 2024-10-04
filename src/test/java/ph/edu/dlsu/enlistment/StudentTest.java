@@ -135,4 +135,20 @@ class StudentTest {
         // Try to cancel a section that is not enlisted
         assertFalse(student.cancelSection("S101"));
     }
+
+    @Test
+    void prerequisites() {
+        // Try to enlist in a section without completing prerequisites
+        assertFalse(student.enlist(section4));
+
+        // Complete the prerequisite subject
+        student.completeSubject(subject1);
+
+        // Enlist in the section after completing prerequisites
+        assertTrue(student.enlist(section2));
+
+        // Verify the section is enlisted
+        assertEquals(1, student.getEnlistedSections().size());
+        assertEquals(section2, student.getEnlistedSections().get(0));
+    }
 }
