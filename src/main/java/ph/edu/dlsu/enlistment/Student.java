@@ -9,12 +9,15 @@ class Student {
     // make immutable
     private final int studentNo;
     private final Collection<Section> sections = new HashSet<>();
+    private final Collection<Subject> subjects = new HashSet<>();
 
-    Student(int studentNo, Collection<Section> sections) {
+    Student(int studentNo, Collection<Section> sections, Collection<Subject> subjects) {
         isTrue(studentNo >= 0, "studentNo must be non-negative; was " + studentNo);
         Objects.requireNonNull(sections);
+        Objects.requireNonNull(subjects);
         this.studentNo = studentNo;
         this.sections.addAll(sections);
+        this.subjects.addAll(subjects);
         noNullElements(sections);
     }
 
@@ -37,6 +40,10 @@ class Student {
 
     Collection<Section> getSections() {
         return new ArrayList<>(sections);
+    }
+
+    Collection<Subject> getSubjects(){
+        return new ArrayList<>(subjects);
     }
 
     @Override
